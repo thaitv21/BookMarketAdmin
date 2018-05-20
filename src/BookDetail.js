@@ -1,40 +1,14 @@
 import React, {Component} from 'react'
 import {
     MuiThemeProvider,
-    RaisedButton
+    RaisedButton,
+    CircularProgress
 } from 'material-ui'
-import axios from 'axios'
 import './App.css'
+import API from './services/API'
 
 import Image from 'material-ui-image'
 
-let data = {
-    id: 2,
-    name: 'Thần điêu hiệp lữ',
-    year: '2009',
-    abstract: 'The auto-complete is an extension of a regular text-field that will auto-complete the input dynamically. It can take different auto-complete filters and uses a menu to display suggestions.',
-    price: 500,
-    like: 1,
-    comment: 10,
-    author: {
-        id: 1,
-        name: 'Than Thai'
-    },
-    publisher: {
-        id: 1,
-        name: 'NXB Bách Khoa'
-    },
-    seller: {
-        username: 'thanthai21'
-    },
-    image: {
-        link: 'dsjhds'
-    },
-    category: {
-        name: 'Novel'
-    }
-
-};
 
 export default class BookDetail extends Component {
 
@@ -48,40 +22,42 @@ export default class BookDetail extends Component {
     }
 
     componentDidMount() {
-        this.fetchData()
+        this.fetchData(this.state.bookId);
     }
 
     render() {
         return (
             <MuiThemeProvider>
                 <div id="container" style={styles.container}>
-                    <div style={styles.content}>
-                        <BookImage/>
-                        <BookInformation data={this.state.bookDetail}/>
-                    </div>
+                    {!this.state.bookDetail && <CircularProgress style={{marginTop: 50}} size={60} thickness={7}/>}
+                    {this.state.bookDetail && (
+                        <div style={styles.content}>
+                            <BookImage url={this.state.bookDetail.image[0].link}/>
+                            <BookInformation data={this.state.bookDetail}/>
+                        </div>
+                    )}
                 </div>
             </MuiThemeProvider>
         )
     }
 
-    fetchData() {
-        axios.get('https://raw.githubusercontent.com/ThanThai21/FakeAPI/master/book_market_events.json')
-            .then((result) => {
-                console.log('result', result);
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
-        this.setState({bookDetail: data})
+    fetchData(id) {
+        API.getBookDetail(id, (result) => {
+            console.log('book detail', result.data);
+            this.setState({bookDetail: result.data.data})
+        }, (error) => {
+            console.log('book detail error', error);
+        });
     }
 }
 
 class BookImage extends Component {
     render() {
+        let url = this.props.url || "";
         return (
             <div style={{height: 400, width: 300, backgroundColor: 'red'}}>
                 <Image aspectRatio={3 / 4} style={{display: 'flex', alignItems: 'center'}}
-                       src="https://scontent.fhph1-2.fna.fbcdn.net/v/t1.0-9/32912993_2702983719750071_7410775845146460160_n.png?_nc_cat=0&oh=f6b5f5fb5a1690b7a998fe8d9495fd9c&oe=5B77DDAA"/>
+                       src={url}/>
             </div>
         )
     }
@@ -118,7 +94,7 @@ class BookInformation extends Component {
                     </li>
                     <li style={styles.row}>
                         <span style={styles.label}>Giá: </span>
-                        <b style={styles.value}>{bookDetail ? bookDetail.price : '0'}</b>
+                        <b style={styles.value}>{bookDetail ? bookDetail.price : '0'}.000 VNĐ</b>
                     </li>
                     <li style={styles.row}>
                         <span style={styles.label}>Người bán: </span>
@@ -131,10 +107,6 @@ class BookInformation extends Component {
                 </div>
             </div>
         )
-    }
-
-    fetchData(id) {
-
     }
 }
 

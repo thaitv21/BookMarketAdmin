@@ -23,8 +23,8 @@ const getBookList = (onSuccess, onError) => {
 const getBookDetail = (bookId, onSuccess, onError) => {
     let params = {
         book_id: bookId
-    }
-    instance.get('/get_list_book', {
+    };
+    instance.get('/get_book', {
         params: params
     }).then((result) => {
         onSuccess(result)
@@ -33,8 +33,34 @@ const getBookDetail = (bookId, onSuccess, onError) => {
     });
 };
 
+const getProfile = (userId, onSuccess, onError) => {
+    let params = {
+        user_id: userId
+    };
+    instance.get('/get_profile', {
+        params: params
+    }).then((result) => {
+        onSuccess(result)
+    }).catch((error) => {
+        onError(error)
+    });
+};
+
+const getListBook = (params, onSuccess, onError) => {
+    instance.get('/get_list_book', {
+        params: params
+    }).then((result) => {
+        onSuccess(result)
+    }).catch((error) => {
+        onError(error)
+    })
+};
+
 const api = {
-    getBookList
+    getBookList,
+    getBookDetail,
+    getProfile,
+    getListBook
 };
 
 export default api;

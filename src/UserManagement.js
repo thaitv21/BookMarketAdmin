@@ -70,26 +70,29 @@ export default class UserManagement extends Component {
                 <TableRow key={index}>
                     <TableRowColumn>{item.id}</TableRowColumn>
                     <TableRowColumn>{item.email}</TableRowColumn>
-                    <TableRowColumn>{item.phone}</TableRowColumn>
-                    <TableRowColumn>{item.address}</TableRowColumn>
                     <TableRowColumn style={styles.activeToggle}>
-                        <Toggle defaultToggled={item.active} toggled={item.active} onToggle={(event, isChecked) => {
-                            this.showAlert(item);
-                        }}/>
+                        <FlatButton
+                            label="Xem chi tiết"
+                            onClick={() => this.props.history.push('/profile/' + item.id)}
+                            labelStyle={{textTransform: 'none', fontFamily: 'Arial'}}/>
                     </TableRowColumn>
                 </TableRow>
             )
         })
     }
 
-    showAlert(item) {
-        this.setState({alertDialog: true, selectedItem: item});
-
-    }
-
-    cancelBlock() {
-        this.setState({alertDialog: false})
-    };
+    // viewUser(user) {
+    //     this.props.history.push('/book-detail/' + item.id)}
+    // }
+    //
+    // showAlert(item) {
+    //     this.setState({alertDialog: true, selectedItem: item});
+    //
+    // }
+    //
+    // cancelBlock() {
+    //     this.setState({alertDialog: false})
+    // };
 
     blockUser = () => {
         let dataSource = this.state.dataSource;
@@ -134,8 +137,6 @@ export default class UserManagement extends Component {
                             <TableRow>
                                 <TableHeaderColumn>ID</TableHeaderColumn>
                                 <TableHeaderColumn>Email</TableHeaderColumn>
-                                <TableHeaderColumn>Phone</TableHeaderColumn>
-                                <TableHeaderColumn>Address</TableHeaderColumn>
                                 <TableHeaderColumn style={styles.activeToggle}>Active</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
@@ -143,12 +144,6 @@ export default class UserManagement extends Component {
                             {this.fillData()}
                         </TableBody>
                     </Table>
-                    <Dialog
-                        actions={this.actions}
-                        modal={false}
-                        open={this.state.alertDialog}>
-                        Khóa tài khoản này
-                    </Dialog>
                 </div>
             </MuiThemeProvider>
         )
@@ -165,7 +160,7 @@ const styles = {
         paddingRight: 50
     },
     activeToggle: {
-        width: 50,
+        width: 80,
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
