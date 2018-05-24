@@ -56,11 +56,41 @@ const getListBook = (params, onSuccess, onError) => {
     })
 };
 
+const search = (p, onSuccess, onError) => {
+    instance.get('/search', {
+        params: p
+    }).then((result) => {
+        onSuccess(result);
+    }).catch((error) => {
+        onError(error);
+    })
+}
+const getAllFeedback = (p, onSuccess, onError) => {
+    instance.post('/get_all_feedback', {
+        params: p
+    }).then((result) => {
+        onSuccess(result);
+    }).catch((error) => {
+        onError(error);
+    })
+}
+
+
+
+const test = (onSuccess, onError) => {
+    axios.get('https://raw.githubusercontent.com/ThanThai21/FakeAPI/master/book_market_events.json')
+    .then((result) => onSuccess(result))
+    .catch((error) => onError(error));
+} 
+
 const api = {
     getBookList,
     getBookDetail,
     getProfile,
-    getListBook
+    getListBook,
+    search,
+    test,
+    getAllFeedback
 };
 
 export default api;

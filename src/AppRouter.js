@@ -6,6 +6,7 @@ import Login from './Login';
 import BookManagement from './BookManagement'
 import BookDetail from './BookDetail'
 import Profile from './Profile'
+import Feedback from './Feedback'
 
 export default class AppRouter extends Component {
     render() {
@@ -18,6 +19,7 @@ export default class AppRouter extends Component {
                 <Route path="/book-management" component={BookManagement}/>
                 <Route path="/book-detail/:bookId" component={BookDetail}/>
                 <Route path="/profile/:userId" component={Profile}/>
+                <Route path="/feedback" component={Feedback} />
             </div>
 
         )
